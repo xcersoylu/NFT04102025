@@ -1,0 +1,14 @@
+{
+  "name": "xcersoylu-nft04102025",
+  "version": "1.0.0",
+  "description": "xcersoylu-NFT04102025",
+  "repositoryLayout": {
+    "formatVersion": 5,
+    "format": "json",
+    "objectStorage": "plain",
+    "metaInformation": ".gctsmetadata/",
+    "tableContent": "true",
+    "readableSource": "false",
+    "keepClient": "false"
+  }
+}
