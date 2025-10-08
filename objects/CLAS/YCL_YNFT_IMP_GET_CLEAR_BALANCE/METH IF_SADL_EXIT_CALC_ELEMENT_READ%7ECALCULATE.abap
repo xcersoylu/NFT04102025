@@ -22,35 +22,7 @@
            r005~accountingdocumentitem
        INTO TABLE @DATA(lt_r005).
 
-    SELECT  exchangerate~validitystartdate , exchangerate~exchangerate
-    FROM @lt_output AS lt_output INNER JOIN i_exchangeraterawdata AS exchangerate ON exchangerate~validitystartdate = lt_output~netduedate
-    WHERE exchangerate~sourcecurrency = 'USD'
-      AND exchangerate~targetcurrency = 'TRY'
-      AND exchangerate~exchangeratetype = 'M'
-      AND lt_output~documentcurrency = 'TRY'
-    ORDER BY exchangerate~validitystartdate
-    INTO TABLE @DATA(lt_usd).
-
-    SELECT  exchangerate~validitystartdate , exchangerate~exchangerate
-    FROM @lt_output AS lt_output INNER JOIN i_exchangeraterawdata AS exchangerate ON exchangerate~validitystartdate = lt_output~netduedate
-    WHERE exchangerate~sourcecurrency = 'EUR'
-      AND exchangerate~targetcurrency = 'TRY'
-      AND exchangerate~exchangeratetype = 'M'
-      AND lt_output~documentcurrency = 'TRY'
-    ORDER BY exchangerate~validitystartdate
-    INTO TABLE @DATA(lt_eur).
-
     LOOP AT lt_output ASSIGNING FIELD-SYMBOL(<ls_output>).
-      IF <ls_output>-documentcurrency = 'TRY'.
-        READ TABLE lt_usd INTO DATA(ls_usd) WITH KEY validitystartdate = <ls_output>-netduedate BINARY SEARCH.
-        IF sy-subrc = 0 AND ls_usd-exchangerate <> 0.
-          <ls_output>-documentamountinusd = <ls_output>-documentcurrenyamount / ls_usd-exchangerate.
-        ENDIF.
-        READ TABLE lt_eur INTO DATA(ls_eur) WITH KEY validitystartdate = <ls_output>-netduedate BINARY SEARCH.
-        IF sy-subrc = 0 AND ls_eur-exchangerate <> 0.
-          <ls_output>-documentamountineur = <ls_output>-documentcurrenyamount / ls_eur-exchangerate.
-        ENDIF.
-      ENDIF.
       READ TABLE lt_r005 INTO DATA(ls_r005) WITH KEY companycode = <ls_output>-companycode
                                                      accountingdocument = <ls_output>-accountingdocument
                                                      fiscalyear = <ls_output>-fiscalyear

@@ -44,17 +44,15 @@
     ENDLOOP.
     IF ms_response-error_messages IS INITIAL.
 ****
-      SELECT items~deliverydocument,
-             items~deliverydocumentitem,
+      SELECT items~companycode,
+             items~accountingdocument,
+             items~fiscalyear,
              r001~costsource
-      FROM @ms_request-items AS items INNER JOIN ynft_t_r002 AS r002 ON r002~deliverydocument = items~deliverydocument
-                                                                             AND r002~deliverydocumentitem = items~deliverydocumentitem
-                                               INNER JOIN ynft_t_r001 AS r001 ON r001~companycode = r002~companycode
-                                                                             AND r001~accountingdocument = r002~accountingdocument
-                                                                             AND r001~fiscalyear = r002~fiscalyear
+      FROM @ms_request-items AS items INNER JOIN ynft_t_r001 AS r001 ON r001~companycode = items~companycode
+                                                                    AND r001~accountingdocument = items~accountingdocument
+                                                                    AND r001~fiscalyear = items~fiscalyear
+      order by items~companycode, items~accountingdocument, items~fiscalyear
       INTO TABLE @DATA(lt_costsource).
-      SORT lt_costsource BY deliverydocument deliverydocumentitem.
-      DELETE ADJACENT DUPLICATES FROM lt_costsource COMPARING deliverydocument deliverydocumentitem.
       DATA(lv_company_code) = VALUE #( ms_request-items[ 1 ]-companycode OPTIONAL ).
       SELECT SINGLE *
         FROM ynft_t_t011
@@ -134,8 +132,9 @@
           LOOP AT ms_request-items INTO DATA(ls_selected_line).
             CLEAR ls_supplier.
             IF ls_selected_line-documentcurrency <> 'TRY'.
-              READ TABLE lt_costsource INTO DATA(ls_costsource) WITH KEY deliverydocument = ls_selected_line-deliverydocument
-                                                                         deliverydocumentitem = ls_selected_line-deliverydocumentitem
+              READ TABLE lt_costsource INTO DATA(ls_costsource) WITH KEY companycode = ls_selected_line-companycode
+                                                                         accountingdocument = ls_selected_line-accountingdocument
+                                                                         fiscalyear = ls_Selected_line-fiscalyear
                                                                          BINARY SEARCH.
               CASE ls_costsource-costsource.
                 WHEN '1'. "mal bedeli
@@ -143,15 +142,22 @@
                   IF lv_exchangeratetype IS INITIAL.
                     lv_exchangeratetype = ls_company_parameter-kurst.
                   ENDIF.
+                  SELECT SINGLE exchangerate~exchangerate
+                  FROM ynft_t_dlv_cus AS dlv INNER JOIN i_exchangeraterawdata AS exchangerate ON exchangerate~validitystartdate = dlv~customsdeclerationdate
+                  WHERE exchangerate~sourcecurrency = @ls_selected_line-documentcurrency
+                    AND exchangerate~targetcurrency = 'TRY'
+                    AND exchangerate~exchangeratetype = @lv_exchangeratetype
+                    AND dlv~deliverydocument = @ls_selected_line-deliverydocument
+                  INTO @DATA(lv_exchangerate).
+                  IF sy-subrc <> 0.
+                    lv_exchangerate = ls_selected_line-absoluteexchangerate.
+                  ENDIF.
                 WHEN OTHERS.
-                  lv_exchangeratetype = ls_company_parameter-kurst.
+                  lv_exchangerate = ls_selected_line-absoluteexchangerate.
               ENDCASE.
-              SELECT SINGLE exchangerate~exchangerate
-              FROM ynft_t_dlv_cus AS dlv INNER JOIN i_exchangeraterawdata AS exchangerate ON exchangerate~validitystartdate = dlv~customsdeclerationdate
-              WHERE exchangerate~sourcecurrency = @ls_selected_line-documentcurrency
-                AND exchangerate~targetcurrency = 'TRY'
-                AND exchangerate~exchangeratetype = @lv_exchangeratetype
-              INTO @DATA(lv_exchangerate).
+
+            ELSE.
+              lv_exchangerate = 1.
             ENDIF.
             ls_supplier =  VALUE #( company_code                = ls_selected_line-companycode
                                     document_date               = ms_request-documentdate

@@ -183,7 +183,8 @@
              cus_it~quantityunit         AS deliveryquantityunit,
              po~plant,
              item~accountingdocument_inv,
-             item~fiscalyear_inv
+             item~fiscalyear_inv,
+             bkpf~absoluteexchangerate
         FROM @lt_r002                       AS item
         INNER JOIN i_journalentry           AS bkpf        ON bkpf~companycode            = item~companycode
                                                           AND bkpf~accountingdocument     = item~accountingdocument
@@ -202,6 +203,7 @@
         LEFT OUTER JOIN i_producttext       AS producttext ON producttext~product         = po~material
                                                           AND producttext~language        = @sy-langu
         LEFT OUTER JOIN i_supplier         AS supplier ON supplier~supplier = bseg~supplier
+        WHERE bkpf~reversedocument = ''
         INTO CORRESPONDING FIELDS OF TABLE @ms_response-items.
 
       "Sort & Conversion işlemleri
