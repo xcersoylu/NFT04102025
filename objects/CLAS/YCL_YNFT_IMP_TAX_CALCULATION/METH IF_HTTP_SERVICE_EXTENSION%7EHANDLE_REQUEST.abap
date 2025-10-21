@@ -106,7 +106,7 @@
         ENDIF.
       ENDLOOP.
     ENDIF.
-
+    ms_Response-totaltax = mv_total_tax.
     response->set_status('200').
     DATA(lv_response_body) = /ui2/cl_json=>serialize( EXPORTING data = ms_response ).
     response->set_text( lv_response_body ).
