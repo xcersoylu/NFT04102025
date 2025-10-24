@@ -63,7 +63,10 @@
                   lv_tax_value = ls_tax_line-value * ls_ratio-conditionrateratio / 100.
               ENDCASE.
 
-              APPEND VALUE #( value    = ls_tax_line-value
+              APPEND VALUE #( costtype = ls_tax_line-costtype
+                              deliverydocument = ls_tax_line-deliverydocument
+                              deliverydocumentitem =  ls_tax_line-deliverydocumentitem
+                              value    = ls_tax_line-value
                               currency = ls_tax_line-currency
                               taxcode  = ls_tax_line-taxcode
                               taxvalue = lv_tax_value
@@ -77,7 +80,10 @@
                   CLEAR lv_tax_value.
                   lv_tax_value = ls_tax_line-value - ( ls_tax_line-value / ( 1 + ( lv_tax_ratio / 100 ) ) ).
                   LOOP AT lt_ratio INTO ls_ratio WHERE taxcode = ls_tax_line-taxcode.
-                    APPEND VALUE #( value    = ls_tax_line-value
+                    APPEND VALUE #( costtype = ls_tax_line-costtype
+                              deliverydocument = ls_tax_line-deliverydocument
+                              deliverydocumentitem =  ls_tax_line-deliverydocumentitem
+                                    value    = ls_tax_line-value
                                     currency = ls_tax_line-currency
                                     taxcode  = ls_tax_line-taxcode
                                     taxvalue = lv_tax_value * ( ls_ratio-conditionrateratio / lv_tax_ratio )
@@ -89,7 +95,10 @@
                 WHEN mc_net.
                   LOOP AT lt_ratio INTO ls_ratio WHERE taxcode = ls_tax_line-taxcode.
                     lv_tax_value = ls_ratio-conditionrateratio * ls_tax_line-value / 100.
-                    APPEND VALUE #( value    = ls_tax_line-value
+                    APPEND VALUE #( costtype = ls_tax_line-costtype
+                              deliverydocument = ls_tax_line-deliverydocument
+                              deliverydocumentitem =  ls_tax_line-deliverydocumentitem
+                                    value    = ls_tax_line-value
                                     currency = ls_tax_line-currency
                                     taxcode  = ls_tax_line-taxcode
                                     taxvalue = lv_tax_value
@@ -106,7 +115,7 @@
         ENDIF.
       ENDLOOP.
     ENDIF.
-    ms_Response-totaltax = mv_total_tax.
+    ms_response-totaltax = mv_total_tax.
     response->set_status('200').
     DATA(lv_response_body) = /ui2/cl_json=>serialize( EXPORTING data = ms_response ).
     response->set_text( lv_response_body ).
