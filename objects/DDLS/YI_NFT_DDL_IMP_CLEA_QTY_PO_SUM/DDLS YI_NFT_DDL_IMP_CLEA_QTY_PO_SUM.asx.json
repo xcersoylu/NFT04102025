@@ -4,15 +4,15 @@
   "data":
   [
    {
-    "DDLNAME":"YI_NFT_DDL_IMP_SHIP_QTY",
+    "DDLNAME":"YI_NFT_DDL_IMP_CLEA_QTY_PO_SUM",
     "AS4LOCAL":"N",
     "AS4USER":"SAP_CUSTOMER",
     "AS4DATE":"0000-00-00",
     "AS4TIME":"00:00:00",
-    "SOURCE":"@AbapCatalog.viewEnhancementCategory: [#NONE]\r\n@AccessControl.authorizationCheck: #NOT_REQUIRED\r\n@EndUserText.label: 'SAS Bazında Toplam Yükleme Miktarı'\r\n@Metadata.ignorePropagatedAnnotations: true\r\n@ObjectModel.usageType:{\r\n    serviceQuality: #X,\r\n    sizeCategory: #S,\r\n    dataClass: #MIXED\r\n}\r\ndefine view entity YI_NFT_DDL_IMP_SHIP_QTY\r\n  as select from ynft_t_dlvit_cus as it\r\n    inner join   ynft_t_dlv_cus   as hd on hd.deliverydocument = it.deliverydocument\r\n{\r\n  key it.purchaseorder,\r\n  key it.purchaseorderitem,\r\n      @Semantics.quantity.unitOfMeasure: 'quantityunit'\r\n      sum( it.shipquantity ) as quantity,\r\n      it.quantityunit\r\n}\r\nwhere\r\n      it.shipquantity > 0\r\n  and hd.documenttype = '1'\r\ngroup by\r\n  it.purchaseorder,\r\n  it.purchaseorderitem,\r\n  it.quantityunit\r\n/*+[internal] {\n\"BASEINFO\":\n{\n\"FROM\":\n[\n\"YNFT_T_DLVIT_CUS\",\n\"YNFT_T_DLV_CUS\"\n],\n\"ASSOCIATED\":\n[],\n\"BASE\":\n[],\n\"ANNO_REF\":\n[],\n\"SCALAR_FUNCTION\":\n[],\n\"VERSION\":0,\n\"ANNOREF_EVALUATION_ERROR\":\"\"\n}\n}*/",
+    "SOURCE":"@AbapCatalog.viewEnhancementCategory: [#NONE]\r\n@AccessControl.authorizationCheck: #NOT_REQUIRED\r\n@EndUserText.label: 'SAS Bazında çekme miktarı'\r\n@Metadata.ignorePropagatedAnnotations: true\r\n@ObjectModel.usageType:{\r\n    serviceQuality: #X,\r\n    sizeCategory: #S,\r\n    dataClass: #MIXED\r\n}\r\ndefine view entity YI_NFT_DDL_IMP_CLEA_QTY_PO_SUM\r\n  as select from YI_NFT_DDL_IMP_CLEA_QTY_PO\r\n\r\n{\r\n  key purchaseorder,\r\n  key purchaseorderitem,\r\n      @Semantics.quantity.unitOfMeasure: 'quantityunit'\r\n      sum( quantity ) as quantity,\r\n      quantityunit\r\n}\r\ngroup by\r\n  purchaseorder,\r\n  purchaseorderitem,\r\n  quantityunit\r\n/*+[internal] {\n\"BASEINFO\":\n{\n\"FROM\":\n[\n\"YI_NFT_DDL_IMP_CLEA_QTY_PO\"\n],\n\"ASSOCIATED\":\n[],\n\"BASE\":\n[],\n\"ANNO_REF\":\n[],\n\"SCALAR_FUNCTION\":\n[],\n\"VERSION\":0,\n\"ANNOREF_EVALUATION_ERROR\":\"\"\n}\n}*/",
     "PARENTNAME":"",
     "ACTFLAG":"",
-    "CHGFLAG":"2",
+    "CHGFLAG":"",
     "SOURCE_TYPE":"W",
     "SOURCE_ORIGIN":"0",
     "ABAP_LANGUAGE_VERSION":"5"
@@ -24,18 +24,11 @@
   "data":
   [
    {
-    "DDLNAME":"YI_NFT_DDL_IMP_SHIP_QTY",
-    "STRUCOBJN":"YI_NFT_DDL_IMP_SHIP_QTY",
-    "DDLANGUAGE":"E",
-    "AS4LOCAL":"N",
-    "DDTEXT":"Total Shipment Quantity depends on PO"
-   },
-   {
-    "DDLNAME":"YI_NFT_DDL_IMP_SHIP_QTY",
-    "STRUCOBJN":"YI_NFT_DDL_IMP_SHIP_QTY",
+    "DDLNAME":"YI_NFT_DDL_IMP_CLEA_QTY_PO_SUM",
+    "STRUCOBJN":"YI_NFT_DDL_IMP_CLEA_QTY_PO_SUM",
     "DDLANGUAGE":"T",
     "AS4LOCAL":"N",
-    "DDTEXT":"SAS Bazında Toplam Yükleme Miktarı"
+    "DDTEXT":"SAS Bazında çekme miktarı"
    }
   ]
  },
@@ -44,10 +37,10 @@
   "data":
   [
    {
-    "DDLNAME":"YI_NFT_DDL_IMP_SHIP_QTY",
+    "DDLNAME":"YI_NFT_DDL_IMP_CLEA_QTY_PO_SUM",
     "DDLANGUAGE":"T",
     "AS4LOCAL":"N",
-    "DDTEXT":"SAS Bazında Toplam Yükleme Miktarı"
+    "DDTEXT":"SAS Bazında çekme miktarı"
    }
   ]
  },
@@ -56,28 +49,28 @@
   "data":
   [
    {
-    "STRUCOBJN":"YI_NFT_DDL_IMP_SHIP_QTY",
+    "STRUCOBJN":"YI_NFT_DDL_IMP_CLEA_QTY_PO_SUM",
     "LFIELDNAME":"MANDT",
     "NAME":"ABAPCATALOG",
     "POSITION":1,
     "VALUE":""
    },
    {
-    "STRUCOBJN":"YI_NFT_DDL_IMP_SHIP_QTY",
+    "STRUCOBJN":"YI_NFT_DDL_IMP_CLEA_QTY_PO_SUM",
     "LFIELDNAME":"MANDT",
     "NAME":"ABAPCATALOG.INTERNAL.ISMANDT",
     "POSITION":2,
     "VALUE":""
    },
    {
-    "STRUCOBJN":"YI_NFT_DDL_IMP_SHIP_QTY",
+    "STRUCOBJN":"YI_NFT_DDL_IMP_CLEA_QTY_PO_SUM",
     "LFIELDNAME":"QUANTITY",
     "NAME":"SEMANTICS",
     "POSITION":3,
     "VALUE":""
    },
    {
-    "STRUCOBJN":"YI_NFT_DDL_IMP_SHIP_QTY",
+    "STRUCOBJN":"YI_NFT_DDL_IMP_CLEA_QTY_PO_SUM",
     "LFIELDNAME":"QUANTITY",
     "NAME":"SEMANTICS.QUANTITY.UNITOFMEASURE",
     "POSITION":4,
@@ -90,73 +83,73 @@
   "data":
   [
    {
-    "STRUCOBJN":"YI_NFT_DDL_IMP_SHIP_QTY",
+    "STRUCOBJN":"YI_NFT_DDL_IMP_CLEA_QTY_PO_SUM",
     "NAME":"ABAPCATALOG",
     "POSITION":1,
     "VALUE":""
    },
    {
-    "STRUCOBJN":"YI_NFT_DDL_IMP_SHIP_QTY",
+    "STRUCOBJN":"YI_NFT_DDL_IMP_CLEA_QTY_PO_SUM",
     "NAME":"ABAPCATALOG.VIEWENHANCEMENTCATEGORY$1$",
     "POSITION":2,
     "VALUE":"#NONE"
    },
    {
-    "STRUCOBJN":"YI_NFT_DDL_IMP_SHIP_QTY",
+    "STRUCOBJN":"YI_NFT_DDL_IMP_CLEA_QTY_PO_SUM",
     "NAME":"ACCESSCONTROL",
     "POSITION":3,
     "VALUE":""
    },
    {
-    "STRUCOBJN":"YI_NFT_DDL_IMP_SHIP_QTY",
+    "STRUCOBJN":"YI_NFT_DDL_IMP_CLEA_QTY_PO_SUM",
     "NAME":"ACCESSCONTROL.AUTHORIZATIONCHECK",
     "POSITION":4,
     "VALUE":"#NOT_REQUIRED"
    },
    {
-    "STRUCOBJN":"YI_NFT_DDL_IMP_SHIP_QTY",
+    "STRUCOBJN":"YI_NFT_DDL_IMP_CLEA_QTY_PO_SUM",
     "NAME":"ENDUSERTEXT",
     "POSITION":5,
     "VALUE":""
    },
    {
-    "STRUCOBJN":"YI_NFT_DDL_IMP_SHIP_QTY",
+    "STRUCOBJN":"YI_NFT_DDL_IMP_CLEA_QTY_PO_SUM",
     "NAME":"ENDUSERTEXT.LABEL",
     "POSITION":6,
-    "VALUE":"'SAS Bazında Toplam Yükleme Miktarı'"
+    "VALUE":"'SAS Bazında çekme miktarı'"
    },
    {
-    "STRUCOBJN":"YI_NFT_DDL_IMP_SHIP_QTY",
+    "STRUCOBJN":"YI_NFT_DDL_IMP_CLEA_QTY_PO_SUM",
     "NAME":"METADATA",
     "POSITION":7,
     "VALUE":""
    },
    {
-    "STRUCOBJN":"YI_NFT_DDL_IMP_SHIP_QTY",
+    "STRUCOBJN":"YI_NFT_DDL_IMP_CLEA_QTY_PO_SUM",
     "NAME":"METADATA.IGNOREPROPAGATEDANNOTATIONS",
     "POSITION":8,
     "VALUE":"true"
    },
    {
-    "STRUCOBJN":"YI_NFT_DDL_IMP_SHIP_QTY",
+    "STRUCOBJN":"YI_NFT_DDL_IMP_CLEA_QTY_PO_SUM",
     "NAME":"OBJECTMODEL.USAGETYPE",
     "POSITION":9,
     "VALUE":""
    },
    {
-    "STRUCOBJN":"YI_NFT_DDL_IMP_SHIP_QTY",
+    "STRUCOBJN":"YI_NFT_DDL_IMP_CLEA_QTY_PO_SUM",
     "NAME":"OBJECTMODEL.USAGETYPE.DATACLASS",
     "POSITION":12,
     "VALUE":"#MIXED"
    },
    {
-    "STRUCOBJN":"YI_NFT_DDL_IMP_SHIP_QTY",
+    "STRUCOBJN":"YI_NFT_DDL_IMP_CLEA_QTY_PO_SUM",
     "NAME":"OBJECTMODEL.USAGETYPE.SERVICEQUALITY",
     "POSITION":10,
     "VALUE":"#X"
    },
    {
-    "STRUCOBJN":"YI_NFT_DDL_IMP_SHIP_QTY",
+    "STRUCOBJN":"YI_NFT_DDL_IMP_CLEA_QTY_PO_SUM",
     "NAME":"OBJECTMODEL.USAGETYPE.SIZECATEGORY",
     "POSITION":11,
     "VALUE":"#S"
@@ -168,8 +161,8 @@
   "data":
   [
    {
-    "DDLNAME":"YI_NFT_DDL_IMP_SHIP_QTY",
-    "OBJECTNAME":"YI_NFT_DDL_IMP_SHIP_QTY",
+    "DDLNAME":"YI_NFT_DDL_IMP_CLEA_QTY_PO_SUM",
+    "OBJECTNAME":"YI_NFT_DDL_IMP_CLEA_QTY_PO_SUM",
     "STATE":"N",
     "OBJECTTYPE":"STOB"
    }
@@ -182,7 +175,7 @@
    {
     "PGMID":"R3TR",
     "OBJECT":"DDLS",
-    "OBJ_NAME":"YI_NFT_DDL_IMP_SHIP_QTY",
+    "OBJ_NAME":"YI_NFT_DDL_IMP_CLEA_QTY_PO_SUM",
     "KORRNUM":"",
     "SRCSYSTEM":"...",
     "AUTHOR":"SAP_CUSTOMER",
@@ -199,8 +192,8 @@
     "CRELEASE":"",
     "DELFLAG":"",
     "TRANSLTTXT":"",
-    "CREATED_ON":"2024-05-21",
-    "CHECK_DATE":"2024-05-21",
+    "CREATED_ON":"2025-10-21",
+    "CHECK_DATE":"2025-10-21",
     "CHECK_CFG":""
    }
   ]
