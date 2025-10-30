@@ -105,6 +105,7 @@
               LOOP AT ms_request-item INTO DATA(ls_selected_line).
                 lv_posnr                                             += 10.
                 ls_delivery_item_custom_fields                       = CORRESPONDING #( ls_selected_line MAPPING quantityunit = purchaseorderquantityunit EXCEPT shipquantity ).
+                ls_delivery_item_custom_fields-quantityunit          = ycl_nft_imp_util_class=>cunit_input( ls_delivery_item_custom_fields-quantityunit ).
                 ls_delivery_item_custom_fields-deliverydocument      = ms_response-deliverydocument.
                 ls_delivery_item_custom_fields-deliverydocumentitem  = lv_posnr.
                 ls_delivery_item_custom_fields-referencedocument     = |{ ls_selected_line-deliverydocument ALPHA = IN }|.
@@ -145,6 +146,7 @@
           LOOP AT ms_request-item INTO ls_selected_line.
             lv_posnr                                             += 10.
             ls_delivery_item_custom_fields                       = CORRESPONDING #( ls_selected_line MAPPING quantityunit = purchaseorderquantityunit shipquantity = clearencequantity EXCEPT clearencequantity ).
+            ls_delivery_item_custom_fields-quantityunit          = ycl_nft_imp_util_class=>cunit_input( ls_delivery_item_custom_fields-quantityunit ).
             ls_delivery_item_custom_fields-deliverydocument      = lv_warehouse_entrence.
             ls_delivery_item_custom_fields-deliverydocumentitem  = lv_posnr.
             ls_delivery_item_custom_fields-referencedocument     = |{ ls_selected_line-deliverydocument ALPHA = IN }|.
@@ -155,6 +157,9 @@
             INSERT ynft_t_dlv_cus   FROM @ls_delivery_custom_fields.
             INSERT ynft_t_dlvit_cus FROM TABLE @lt_delivery_item_custom_fields.
             COMMIT WORK AND WAIT.
+            ms_response-deliverydocument = lv_warehouse_entrence.
+                  MESSAGE ID ycl_nft_imp_util_class=>mc_msgid TYPE 'S' NUMBER 016 WITH ms_response-deliverydocument INTO lv_message.
+                  APPEND lv_message TO ms_response-messages.
           ENDIF.
        ENDCASE.
     ENDIF.
