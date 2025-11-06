@@ -84,6 +84,7 @@
                                 _apitems                     = VALUE #( FOR wa_apitem  IN ms_request-apitem  ( CORRESPONDING #( wa_apitem  MAPPING _currencyamount = currencyamount ) ) )
                                 _glitems                     = VALUE #( FOR wa_glitem  IN lt_glitem          ( CORRESPONDING #( wa_glitem  MAPPING _currencyamount = currencyamount ) ) )
                                 _taxitems                    = VALUE #( FOR wa_taxitem IN ms_request-taxitem ( CORRESPONDING #( wa_taxitem MAPPING _currencyamount = currencyamount ) ) )
+                                _withholdingtaxitems         = VALUE #( FOR wa_whtaxitem IN ms_request-withholdingtaxitems ( CORRESPONDING #( wa_whtaxitem MAPPING _currencyamount = currencyamount ) ) )
                               ).
       MODIFY ENTITIES OF i_journalentrytp
        ENTITY journalentry
