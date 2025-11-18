@@ -71,6 +71,8 @@
       ENDIF.
     ENDLOOP.
     IF ms_response-error_messages IS INITIAL.
+      DELETE ms_request-withholdingtaxitems WHERE withholdingtaxtype IS INITIAL AND
+                                                  withholdingtaxcode IS INITIAL.
       <fs_je>-%param = VALUE #( companycode                  = ms_request-header-companycode
                                 documentreferenceid          = ms_request-header-documentreferenceid
                                 createdbyuser                = sy-uname

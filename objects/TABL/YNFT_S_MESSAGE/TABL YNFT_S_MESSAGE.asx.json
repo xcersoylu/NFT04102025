@@ -4,7 +4,7 @@
   "data":
   [
    {
-    "TABNAME":"YNFT_S_IMP_CREATE_CLR_BLNC_RES",
+    "TABNAME":"YNFT_S_MESSAGE",
     "AS4LOCAL":"L",
     "AS4VERS":0,
     "TABCLASS":"INTTAB",
@@ -67,11 +67,11 @@
   "data":
   [
    {
-    "TABNAME":"YNFT_S_IMP_CREATE_CLR_BLNC_RES",
+    "TABNAME":"YNFT_S_MESSAGE",
     "DDLANGUAGE":"T",
     "AS4LOCAL":"N",
     "AS4VERS":0,
-    "DDTEXT":"Dosya Kapama Yaratma Cevap"
+    "DDTEXT":"Mesaj"
    }
   ]
  },
@@ -80,31 +80,64 @@
   "data":
   [
    {
-    "TABNAME":"YNFT_S_IMP_CREATE_CLR_BLNC_RES",
-    "FIELDNAME":"MESSAGES",
+    "TABNAME":"YNFT_S_MESSAGE",
+    "FIELDNAME":"MESSAGE",
     "AS4LOCAL":"N",
     "AS4VERS":0,
-    "POSITION":1,
+    "POSITION":2,
     "KEYFLAG":"",
     "MANDATORY":"",
-    "ROLLNAME":"YNFT_TT_MESSAGE",
+    "ROLLNAME":"",
     "CHECKTABLE":"",
     "ADMINFIELD":"0",
-    "INTTYPE":"",
-    "INTLEN":0,
+    "INTTYPE":"g",
+    "INTLEN":8,
     "REFTABLE":"",
     "PRECFIELD":"",
     "REFFIELD":"",
     "CONROUT":"",
     "NOTNULL":"",
-    "DATATYPE":"TTYP",
+    "DATATYPE":"STRG",
     "LENG":0,
     "DECIMALS":0,
     "DOMNAME":"",
     "SHLPORIGIN":"",
     "TABLETYPE":"",
     "DEPTH":0,
-    "COMPTYPE":"L",
+    "COMPTYPE":"",
+    "REFTYPE":"",
+    "LANGUFLAG":"",
+    "DBPOSITION":0,
+    "ANONYMOUS":"",
+    "OUTPUTSTYLE":0,
+    "SRS_ID":0
+   },
+   {
+    "TABNAME":"YNFT_S_MESSAGE",
+    "FIELDNAME":"MESSAGETYPE",
+    "AS4LOCAL":"N",
+    "AS4VERS":0,
+    "POSITION":1,
+    "KEYFLAG":"",
+    "MANDATORY":"",
+    "ROLLNAME":"MSGTY",
+    "CHECKTABLE":"",
+    "ADMINFIELD":"0",
+    "INTTYPE":"C",
+    "INTLEN":2,
+    "REFTABLE":"",
+    "PRECFIELD":"",
+    "REFFIELD":"",
+    "CONROUT":"",
+    "NOTNULL":"",
+    "DATATYPE":"CHAR",
+    "LENG":1,
+    "DECIMALS":0,
+    "DOMNAME":"MSGAR",
+    "SHLPORIGIN":"F",
+    "TABLETYPE":"",
+    "DEPTH":0,
+    "COMPTYPE":"E",
     "REFTYPE":"",
     "LANGUFLAG":"",
     "DBPOSITION":0,
@@ -115,11 +148,24 @@
   ]
  },
  {
+  "table":"DD03T",
+  "data":
+  [
+   {
+    "TABNAME":"YNFT_S_MESSAGE",
+    "DDLANGUAGE":"T",
+    "AS4LOCAL":"N",
+    "FIELDNAME":"MESSAGE",
+    "DDTEXT":""
+   }
+  ]
+ },
+ {
   "table":"DDTYPES",
   "data":
   [
    {
-    "TYPENAME":"YNFT_S_IMP_CREATE_CLR_BLNC_RES",
+    "TYPENAME":"YNFT_S_MESSAGE",
     "STATE":"N",
     "TYPEKIND":"TABL"
    }
@@ -132,7 +178,7 @@
    {
     "PGMID":"R3TR",
     "OBJECT":"TABL",
-    "OBJ_NAME":"YNFT_S_IMP_CREATE_CLR_BLNC_RES",
+    "OBJ_NAME":"YNFT_S_MESSAGE",
     "KORRNUM":"",
     "SRCSYSTEM":"...",
     "AUTHOR":"SAP_CUSTOMER",
@@ -149,8 +195,8 @@
     "CRELEASE":"",
     "DELFLAG":"",
     "TRANSLTTXT":"",
-    "CREATED_ON":"2024-06-10",
-    "CHECK_DATE":"2024-06-10",
+    "CREATED_ON":"2025-11-13",
+    "CHECK_DATE":"2025-11-13",
     "CHECK_CFG":""
    }
   ]

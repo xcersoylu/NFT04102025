@@ -39,10 +39,10 @@
            TYPE 'E'
            NUMBER 026
            WITH ls_item-deliverydocument ls_item-deliverydocumentitem INTO DATA(lv_message).
-        APPEND lv_message TO ms_response-error_messages.
+        APPEND VALUE #( messagetype = 'E' message = lv_message ) TO ms_response-messages.
       ENDIF.
     ENDLOOP.
-    IF ms_response-error_messages IS INITIAL.
+    IF ms_response-messages IS INITIAL.
 ****
       SELECT items~companycode,
              items~accountingdocument,
@@ -51,7 +51,7 @@
       FROM @ms_request-items AS items INNER JOIN ynft_t_r001 AS r001 ON r001~companycode = items~companycode
                                                                     AND r001~accountingdocument = items~accountingdocument
                                                                     AND r001~fiscalyear = items~fiscalyear
-      order by items~companycode, items~accountingdocument, items~fiscalyear
+      ORDER BY items~companycode, items~accountingdocument, items~fiscalyear
       INTO TABLE @DATA(lt_costsource).
       DATA(lv_company_code) = VALUE #( ms_request-items[ 1 ]-companycode OPTIONAL ).
       SELECT SINGLE *
@@ -130,11 +130,11 @@
           ASSERT lo_http_client IS BOUND.
           DATA lv_exchangeratetype TYPE kurst_curr.
           LOOP AT ms_request-items INTO DATA(ls_selected_line).
-            CLEAR ls_supplier.
+            CLEAR:ls_supplier,ls_supplier_return.
             IF ls_selected_line-documentcurrency <> 'TRY'.
               READ TABLE lt_costsource INTO DATA(ls_costsource) WITH KEY companycode = ls_selected_line-companycode
                                                                          accountingdocument = ls_selected_line-accountingdocument
-                                                                         fiscalyear = ls_Selected_line-fiscalyear
+                                                                         fiscalyear = ls_selected_line-fiscalyear
                                                                          BINARY SEARCH.
               CASE ls_costsource-costsource.
                 WHEN '1'. "mal bedeli
@@ -165,7 +165,7 @@
                                     supplier_invoice_idby_invc  = ls_selected_line-accountingdocument && ls_selected_line-accountingdocumentitem
                                     invoicing_party             = ls_selected_line-supplier
                                     document_currency           = ls_selected_line-documentcurrency
-                                    document_header_text        = ls_selected_line-deliverydocument && 'Dosya Kapama'
+                                    document_header_text        = |{ ls_selected_line-deliverydocument } Dosya Kapama|
                                     accounting_document_type    = ls_parameter-blart
                                     tax_determination_date      = ls_selected_line-postingdate
                                     supplier_invoice_is_credit  = ''
@@ -201,41 +201,42 @@
                                                     io_data_description = lo_data_description_node ).
                 lo_response = lo_request->execute( ).
                 lo_response->get_business_data( IMPORTING es_business_data = ls_supplier_return ).
+                IF ls_supplier_return-supplier_invoice IS NOT INITIAL.
+                  READ TABLE lt_r005_check INTO DATA(ls_r005_check) WITH KEY companycode            = ls_selected_line-companycode
+                                                                             accountingdocument     = ls_selected_line-accountingdocument
+                                                                             fiscalyear             = ls_selected_line-fiscalyear
+                                                                             accountingdocumentitem = ls_selected_line-accountingdocumentitem BINARY SEARCH.
+
+                  APPEND VALUE #( companycode             = ls_selected_line-companycode
+                                  accountingdocument      = ls_selected_line-accountingdocument
+                                  fiscalyear              = ls_selected_line-fiscalyear
+                                  accountingdocumentitem  = ls_selected_line-accountingdocumentitem
+                                  referenceitem           = ls_r005_check-referenceitem + 1
+                                  deliverydocument        = |{ ls_selected_line-deliverydocument ALPHA = IN }|
+                                  deliverydocumentitem    = ls_selected_line-deliverydocumentitem
+                                  quantity                = ls_selected_line-deliveryquantity
+                                  quantityunit            = ls_selected_line-deliveryquantityunit
+                                  amount                  = ls_selected_line-documentcurrenyamount
+                                  currency                = ls_selected_line-documentcurrency
+                                  accountingdocument_inv  = ls_supplier_return-supplier_invoice
+                                  fiscalyear_inv          = ls_supplier_return-fiscal_year ) TO lt_r005.
+                  MESSAGE ID ycl_nft_imp_util_class=>mc_msgid
+                     TYPE 'S'
+                     NUMBER 027
+                     WITH ls_selected_line-accountingdocument
+                          ls_selected_line-accountingdocumentitem
+                          ls_supplier_return-supplier_invoice INTO lv_message.
+                  APPEND VALUE #( messagetype = 'S' message = lv_message )  TO ms_response-messages.
+                  FREE: lo_request, lo_item_child, lo_item_child2, lo_response.
+                  CLEAR: ls_r005_check, lv_message,ls_costsource.
+                ENDIF.
               CATCH /iwbep/cx_cp_remote INTO DATA(lx_remote).
                 DATA(lv_error)               = lx_remote->if_message~get_longtext(  ).
                 DATA(lv_error_body)          = lx_remote->http_error_body.
                 DATA(ls_odata_error)         = lx_remote->s_odata_error.
                 DATA(lv_http_status_message) = lx_remote->http_status_message.
-                APPEND lv_error TO ms_response-error_messages.
+                APPEND VALUE #( messagetype = 'E' message = lv_error )  TO ms_response-messages.
             ENDTRY.
-            IF ls_supplier_return-supplier_invoice IS NOT INITIAL.
-              READ TABLE lt_r005_check INTO DATA(ls_r005_check) WITH KEY companycode            = ls_selected_line-companycode
-                                                                         accountingdocument     = ls_selected_line-accountingdocument
-                                                                         fiscalyear             = ls_selected_line-fiscalyear
-                                                                         accountingdocumentitem = ls_selected_line-accountingdocumentitem BINARY SEARCH.
-
-              APPEND VALUE #( companycode             = ls_selected_line-companycode
-                              accountingdocument      = ls_selected_line-accountingdocument
-                              fiscalyear              = ls_selected_line-fiscalyear
-                              accountingdocumentitem  = ls_selected_line-accountingdocumentitem
-                              referenceitem           = ls_r005_check-referenceitem + 1
-                              deliverydocument        = |{ ls_selected_line-deliverydocument ALPHA = IN }|
-                              deliverydocumentitem    = ls_selected_line-deliverydocumentitem
-                              quantity                = ls_selected_line-deliveryquantity
-                              quantityunit            = ls_selected_line-deliveryquantityunit
-                              amount                  = ls_selected_line-documentcurrenyamount
-                              currency                = ls_selected_line-documentcurrency
-                              accountingdocument_inv  = ls_supplier_return-supplier_invoice
-                              fiscalyear_inv          = ls_supplier_return-fiscal_year ) TO lt_r005.
-              ms_response-supplier_invoice = ls_supplier_return-supplier_invoice.
-              MESSAGE ID ycl_nft_imp_util_class=>mc_msgid
-                 TYPE 'S'
-                 NUMBER 016
-                 WITH ls_supplier_return-supplier_invoice INTO lv_message.
-              APPEND lv_message TO ms_response-error_messages.
-              FREE: lo_request, lo_item_child, lo_item_child2, lo_response.
-              CLEAR: ls_r005_check, lv_message.
-            ENDIF.
           ENDLOOP.
           IF lt_r005 IS NOT INITIAL.
             MODIFY ynft_t_r005 FROM TABLE @lt_r005.
@@ -243,13 +244,13 @@
 
         CATCH /iwbep/cx_gateway INTO DATA(lx_gateway).
           lv_error = lx_gateway->if_message~get_longtext(  ).
-          APPEND lv_error TO ms_response-error_messages.
+          APPEND VALUE #( messagetype = 'E' message = lv_error ) TO ms_response-messages.
         CATCH cx_web_http_client_error INTO DATA(lx_web_http_client_error).
           lv_error = lx_web_http_client_error->if_message~get_longtext(  ).
-          APPEND lv_error TO ms_response-error_messages.
+          APPEND VALUE #( messagetype = 'E' message = lv_error ) TO ms_response-messages.
         CATCH cx_http_dest_provider_error INTO DATA(lx_provider_error).
           lv_error = lx_provider_error->if_message~get_longtext(  ).
-          APPEND lv_error TO ms_response-error_messages.
+          APPEND VALUE #( messagetype = 'E' message = lv_error ) TO ms_response-messages.
       ENDTRY.
     ENDIF.
     DATA(lv_response_body) = /ui2/cl_json=>serialize( EXPORTING data = ms_response ).

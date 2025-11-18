@@ -126,7 +126,7 @@
             response->set_status( '400' ).
           ENDIF.
         WHEN 3. "antrepo giriş
-          DATA(lv_shipment_document) = ls_line-deliverydocument.
+          DATA(lv_shipment_document) = |{ ls_line-deliverydocument ALPHA = IN }|.
           SELECT hd~deliverydocument
                      FROM ynft_t_dlv_cus AS hd INNER JOIN ynft_t_dlvit_cus AS it ON it~deliverydocument = hd~deliverydocument
                      WHERE it~referencedocument = @lv_shipment_document

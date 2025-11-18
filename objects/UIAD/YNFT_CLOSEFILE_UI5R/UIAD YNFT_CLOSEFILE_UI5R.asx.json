@@ -33,7 +33,7 @@
     "REFRESH_INTERVALL":0,
     "DISPLAY_NUMBER_UNIT":"",
     "FLAVOR_ID":"",
-    "CHANGED_AT":"+020251009220239",
+    "CHANGED_AT":"+020251118145026",
     "CHANGED_BY":"SAP_CUSTOMER",
     "MASTERLANG":"",
     "ACH_COMPONENT":"",
@@ -100,7 +100,7 @@
     "TILE_KEYWORDS":"",
     "TILE_INFORMATION":"",
     "ALT_SMART_LINK_TITLE":"Dosya Kapama",
-    "DESCRIPTION":"{{appDescription}}"
+    "DESCRIPTION":"Dosya Kapama"
    }
   ]
  },
@@ -128,8 +128,8 @@
     "CRELEASE":"",
     "DELFLAG":"",
     "TRANSLTTXT":"",
-    "CREATED_ON":"2025-10-09",
-    "CHECK_DATE":"2025-10-09",
+    "CREATED_ON":"2025-11-18",
+    "CHECK_DATE":"2025-11-18",
     "CHECK_CFG":""
    }
   ]
