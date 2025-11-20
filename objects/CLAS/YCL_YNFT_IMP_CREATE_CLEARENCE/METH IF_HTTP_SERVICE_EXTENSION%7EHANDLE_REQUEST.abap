@@ -137,7 +137,7 @@
             DATA(lv_warehouse_entrence) = VALUE #( lt_warehouse_entrence[ 1 ]-deliverydocument OPTIONAL ).
             lv_warehouse_entrence += 1.
           ELSE.
-            lv_warehouse_entrence = |{ lv_shipment_document }01|.
+            lv_warehouse_entrence = |{ ls_line-deliverydocument }01|.
           ENDIF.
           ls_delivery_custom_fields                  = CORRESPONDING #( ms_request-header ).
           ls_delivery_custom_fields-deliverydocument = lv_warehouse_entrence.
