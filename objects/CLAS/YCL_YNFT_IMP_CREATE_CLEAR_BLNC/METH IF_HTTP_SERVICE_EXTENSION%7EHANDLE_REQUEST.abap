@@ -99,7 +99,7 @@
       APPEND 'DEBIT_CREDIT_CODE'          TO lt_gl_pro.
       APPEND 'GLACCOUNT'                  TO lt_gl_pro.
       APPEND 'COMPANY_CODE'               TO lt_gl_pro.
-      APPEND 'TAX_CODE'                   TO lt_gl_pro.
+*      APPEND 'TAX_CODE'                   TO lt_gl_pro.
       APPEND 'DOCUMENT_CURRENCY'          TO lt_gl_pro.
       APPEND 'SUPPLIER_INVOICE_ITEM_AMOU' TO lt_gl_pro.
 
@@ -185,7 +185,7 @@
                                                                              debit_credit_code          = 'H'
                                                                              glaccount                  = ls_selected_line-accountnumber
                                                                              company_code               = ls_selected_line-companycode
-                                                                             tax_code                   = ls_parameter-mwskz
+*                                                                             tax_code                   = ls_parameter-mwskz
                                                                              document_currency          = ls_selected_line-documentcurrency
                                                                              supplier_invoice_item_amou = ls_selected_line-documentcurrenyamount ) ) ).
 
