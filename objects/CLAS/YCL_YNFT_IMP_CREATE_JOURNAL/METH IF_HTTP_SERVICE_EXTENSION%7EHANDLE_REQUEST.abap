@@ -64,12 +64,15 @@
       ENDLOOP.
     ENDIF.
 *fioriden vergi tutarı inmeden geliyordu vergi tutarını iniyoruz.
-    LOOP AT lt_glitem ASSIGNING <ls_glitem>.
-      IF <ls_glitem>-currencyamount IS NOT INITIAL.
-        READ TABLE <ls_glitem>-currencyamount ASSIGNING FIELD-SYMBOL(<ls_curr>) INDEX 1.
-        <ls_curr>-journalentryitemamount = <ls_curr>-journalentryitemamount - <ls_glitem>-taxamount.
-      ENDIF.
-    ENDLOOP.
+*mal bedeli faturasında net tutar girildiği için bu işlem yapılmıyor.
+    IF ms_request-header-costsource <> '1'.
+      LOOP AT lt_glitem ASSIGNING <ls_glitem>.
+        IF <ls_glitem>-currencyamount IS NOT INITIAL.
+          READ TABLE <ls_glitem>-currencyamount ASSIGNING FIELD-SYMBOL(<ls_curr>) INDEX 1.
+          <ls_curr>-journalentryitemamount = <ls_curr>-journalentryitemamount - <ls_glitem>-taxamount.
+        ENDIF.
+      ENDLOOP.
+    ENDIF.
     IF ms_response-error_messages IS INITIAL.
       DELETE ms_request-withholdingtaxitems WHERE withholdingtaxtype IS INITIAL AND
                                                   withholdingtaxcode IS INITIAL.
