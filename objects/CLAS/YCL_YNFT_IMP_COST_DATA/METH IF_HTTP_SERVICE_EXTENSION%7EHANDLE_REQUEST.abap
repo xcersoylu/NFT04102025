@@ -74,27 +74,40 @@
       response->set_status('400').
     ENDIF.
     IF ls_response-message IS INITIAL.
-      SELECT
-       FROM yi_nft_ddl_imp_cost_data
-       FIELDS deliverydocument,
-              deliverydocumentitem,
-              purchaseorder,
-              purchaseorderitem,
-              material,
-              materialtext,
-              deliveryquantity,
-              salesunit,
-              vendor,
-              vendorname,
-              orderquantity,
-              documentcurrency,
-              profitcenter,
-              netvalue,
-              unitofmeasure,
-              netpriceamount,
-              documenttype
-        WHERE deliverydocument IN @lt_deliverydocument
-        INTO CORRESPONDING FIELDS OF TABLE @ls_response-data.
+      SELECT *
+      FROM yi_nft_ddl_imp_cost_data
+      WHERE deliverydocument IN @lt_deliverydocument
+      INTO TABLE @DATA(lt_data).
+      LOOP AT lt_data INTO DATA(ls_data).
+        IF ls_data-orderpriceunit <> ls_data-unitofmeasure.
+          TRY.
+              ls_data-netpriceamount = ls_data-netpriceamount * ls_data-orderpriceunittoorderunitnmrtr  / ls_data-ordpriceunittoorderunitdnmntr.
+            CATCH  cx_sy_zerodivide.
+          ENDTRY.
+        ENDIF.
+        APPEND CORRESPONDING #( ls_data ) TO ls_response-data.
+      ENDLOOP.
+*      SELECT
+*       FROM yi_nft_ddl_imp_cost_data
+*       FIELDS deliverydocument,
+*              deliverydocumentitem,
+*              purchaseorder,
+*              purchaseorderitem,
+*              material,
+*              materialtext,
+*              deliveryquantity,
+*              salesunit,
+*              vendor,
+*              vendorname,
+*              orderquantity,
+*              documentcurrency,
+*              profitcenter,
+*              netvalue,
+*              unitofmeasure,
+*              netpriceamount,
+*              documenttype
+*        WHERE deliverydocument IN @lt_deliverydocument
+*        INTO CORRESPONDING FIELDS OF TABLE @ls_response-data.
       IF sy-subrc = 0.
         response->set_status('200').
       ELSE.
