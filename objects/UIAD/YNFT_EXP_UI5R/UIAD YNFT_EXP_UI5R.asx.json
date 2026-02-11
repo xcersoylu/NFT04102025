@@ -33,7 +33,7 @@
     "REFRESH_INTERVALL":0,
     "DISPLAY_NUMBER_UNIT":"",
     "FLAVOR_ID":"",
-    "CHANGED_AT":"+020251117173631",
+    "CHANGED_AT":"+020260211083208",
     "CHANGED_BY":"SAP_CUSTOMER",
     "MASTERLANG":"",
     "ACH_COMPONENT":"",
@@ -47,7 +47,9 @@
     "REUSE_TEXT":"",
     "CREATED_BY_CUSTOMER":"",
     "CAT_DESCR":"",
-    "ABAP_LANGUAGE_VERSION":"5"
+    "ABAP_LANGUAGE_VERSION":"5",
+    "COMMUNICATION_TARGET":"",
+    "PLUGIN_ID":""
    }
   ]
  },
@@ -147,8 +149,8 @@
     "CRELEASE":"",
     "DELFLAG":"",
     "TRANSLTTXT":"",
-    "CREATED_ON":"2025-11-17",
-    "CHECK_DATE":"2025-11-17",
+    "CREATED_ON":"2026-02-11",
+    "CHECK_DATE":"2026-02-11",
     "CHECK_CFG":""
    }
   ]
