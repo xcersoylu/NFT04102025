@@ -218,6 +218,9 @@
         <fs_item>-deliverydocument = |{ <fs_item>-deliverydocument ALPHA = OUT }|.
         <fs_item>-supplier         = |{ <fs_item>-supplier ALPHA = OUT }|.
         <fs_item>-product          = |{ <fs_item>-product ALPHA = OUT }|.
+        SELECT SINGLE unitofmeasure_e FROM i_unitofmeasuretext WHERE language = @sy-langu
+                                                                  AND unitofmeasure = @<fs_item>-deliveryquantityunit
+            INTO @<fs_item>-deliveryquantityunit.
       ENDLOOP.
     ENDIF.
 

@@ -120,6 +120,11 @@
                                                        comm_system_id = VALUE #( lt_parameters[ parameterkey = 'COMM_SYSTEM_ID' ]-value OPTIONAL )
                                                        service_id     = VALUE #( lt_parameters[ parameterkey = 'SERVICE_ID' ]-value OPTIONAL ) ).
           lo_http_client = cl_web_http_client_manager=>create_by_http_destination( lo_destination ).
+          lo_http_client->get_http_request(  )->set_header_field(
+                EXPORTING
+                  i_name  = 'Accept-Language'
+                  i_value = COND #( WHEN sy-langu = 'T' THEN 'tr' WHEN sy-langu = 'E' THEN 'en' ELSE 'tr' )
+              ).
           lo_client_proxy = /iwbep/cl_cp_factory_remote=>create_v2_remote_proxy(
             EXPORTING
                is_proxy_model_key      = VALUE #( repository_id       = 'DEFAULT'
@@ -159,6 +164,14 @@
             ELSE.
               lv_exchangerate = 1.
             ENDIF.
+            SELECT SINGLE orderpriceunit
+            FROM i_purchaseorderitemapi01
+            WHERE purchaseorder = @ls_selected_line-referencesddocument
+             AND purchaseorderitem = @ls_selected_line-referencesddocumentitem+1(*)
+                                                  INTO @DATA(lv_orderquantityunit).
+            SELECT SINGLE unitofmeasure_e FROM i_unitofmeasuretext WHERE language = @sy-langu
+                                                                      AND unitofmeasure = @lv_orderquantityunit
+                INTO @DATA(lv_orderpriceunit).
             ls_supplier =  VALUE #( company_code                = ls_selected_line-companycode
                                     document_date               = ms_request-documentdate
                                     posting_date                = ms_request-postingdate
@@ -176,7 +189,7 @@
                                                                              purchase_order_item        = ls_selected_line-referencesddocumentitem+1(*)
                                                                              document_currency          = ls_selected_line-documentcurrency
                                                                              supplier_invoice_item_amou = ls_selected_line-documentcurrenyamount
-                                                                             purchase_order_price_unit  = ls_selected_line-deliveryquantityunit
+                                                                             purchase_order_price_unit  = lv_orderpriceunit "ls_selected_line-deliveryquantityunit
                                                                              purchase_order_quantity_un = ls_selected_line-deliveryquantityunit
                                                                              quantity_in_purchase_order = ls_selected_line-deliveryquantity
                                                                              tax_code                   = ls_parameter-mwskz
