@@ -172,6 +172,13 @@
             SELECT SINGLE unitofmeasure_e FROM i_unitofmeasuretext WHERE language = @sy-langu
                                                                       AND unitofmeasure = @lv_orderquantityunit
                 INTO @DATA(lv_orderpriceunit).
+            SELECT SINGLE debitcreditcode
+                    FROM i_operationalacctgdocitem
+                    WHERE companycode = @ls_selected_line-companycode
+                      AND accountingdocument = @ls_selected_line-accountingdocument
+                      AND fiscalyear = @ls_selected_line-fiscalyear
+                      AND accountingdocumentitem = @ls_selected_line-accountingdocumentitem
+                    INTO @DATA(lv_debitcreditcode).
             ls_supplier =  VALUE #( company_code                = ls_selected_line-companycode
                                     document_date               = ms_request-documentdate
                                     posting_date                = ms_request-postingdate
@@ -193,9 +200,13 @@
                                                                              purchase_order_quantity_un = ls_selected_line-deliveryquantityunit
                                                                              quantity_in_purchase_order = ls_selected_line-deliveryquantity
                                                                              tax_code                   = ls_parameter-mwskz
-                                                                             is_subsequent_debit_credit = '' ) )
+                                                                             is_subsequent_debit_credit = COND #( WHEN ls_costsource-costsource <> '1' THEN 'X'
+                                                                                                                  WHEN ls_costsource-costsource = '1' AND lv_debitcreditcode = 'H' THEN 'X'
+                                                                                                                  WHEN ls_costsource-costsource = '1' AND ls_selected_line-costtype IS NOT INITIAL THEN 'X'
+                                                                                                                  ELSE '' )
+                                                                         ) )
                                     to_supplier_invoice_item_g  = VALUE #( ( supplier_invoice_item      = '0001'
-                                                                             debit_credit_code          = 'H'
+                                                                             debit_credit_code          = COND #( WHEN lv_debitcreditcode = 'H' THEN 'S' ELSE 'H' )
                                                                              glaccount                  = ls_selected_line-accountnumber
                                                                              company_code               = ls_selected_line-companycode
 *                                                                             tax_code                   = ls_parameter-mwskz
@@ -241,7 +252,7 @@
                           ls_supplier_return-supplier_invoice INTO lv_message.
                   APPEND VALUE #( messagetype = 'S' message = lv_message )  TO ms_response-messages.
                   FREE: lo_request, lo_item_child, lo_item_child2, lo_response.
-                  CLEAR: ls_r005_check, lv_message,ls_costsource.
+                  CLEAR: ls_r005_check, lv_message,ls_costsource,lv_debitcreditcode,lv_orderquantityunit,lv_orderpriceunit.
                 ENDIF.
               CATCH /iwbep/cx_cp_remote INTO DATA(lx_remote).
                 DATA(lv_error)               = lx_remote->if_message~get_longtext(  ).
