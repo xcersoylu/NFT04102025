@@ -232,7 +232,7 @@
 
       "Sort & Conversion işlemleri
       SORT: ms_response-header BY deliverydocument,
-            ms_response-items  BY accountingdocument accountingdocumentitem.
+            ms_response-items  BY deliverydocument costtype. "accountingdocument accountingdocumentitem.
 
       LOOP AT ms_response-header ASSIGNING FIELD-SYMBOL(<fs_header>).
         <fs_header>-deliverydocument = |{ <fs_header>-deliverydocument ALPHA = OUT }|.

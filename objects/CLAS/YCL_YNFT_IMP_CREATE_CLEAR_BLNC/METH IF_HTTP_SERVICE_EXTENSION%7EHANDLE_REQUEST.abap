@@ -202,7 +202,7 @@
                                                                              tax_code                   = ls_parameter-mwskz
                                                                              is_subsequent_debit_credit = COND #( WHEN ls_costsource-costsource <> '1' THEN 'X'
                                                                                                                   WHEN ls_costsource-costsource = '1' AND lv_debitcreditcode = 'H' THEN 'X'
-                                                                                                                  WHEN ls_costsource-costsource = '1' AND ls_selected_line-costtype IS NOT INITIAL THEN 'X'
+                                                                                                                  WHEN ls_costsource-costsource = '1' AND ls_selected_line-costtype <> '00' THEN 'X'
                                                                                                                   ELSE '' )
                                                                          ) )
                                     to_supplier_invoice_item_g  = VALUE #( ( supplier_invoice_item      = '0001'
