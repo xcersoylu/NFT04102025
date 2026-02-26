@@ -39,9 +39,13 @@
            ynft_t_dlv_cus~documenttype,
            ynft_t_dlvit_cus~shipquantity AS deliveryquantity
        FROM ynft_t_r002 AS r002
+       INNER JOIN i_journalentry AS bkpf ON bkpf~companycode            = r002~companycode
+                                        AND bkpf~accountingdocument     = r002~accountingdocument
+                                        AND bkpf~fiscalyear             = r002~fiscalyear
        INNER JOIN ynft_t_dlv_cus ON ynft_t_dlv_cus~deliverydocument        = r002~deliverydocument
        LEFT JOIN ynft_t_dlvit_cus ON ynft_t_dlvit_cus~deliverydocument     = r002~deliverydocument
                                  AND ynft_t_dlvit_cus~deliverydocumentitem = r002~deliverydocumentitem
+       WHERE bkpf~reversedocument = ''
        INTO CORRESPONDING FIELDS OF TABLE @lt_r002.
 
     "Yükleme belgesi ile girilen masrafları çekme belgeleri üzerine dağıt
