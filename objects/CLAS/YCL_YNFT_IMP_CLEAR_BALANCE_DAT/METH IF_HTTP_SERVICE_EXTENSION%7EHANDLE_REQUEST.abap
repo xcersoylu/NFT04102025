@@ -16,8 +16,9 @@
              fiscalyear_inv         TYPE ynft_t_r005-fiscalyear_inv,
            END OF ty_r002.
 
-    DATA: lt_r002       TYPE TABLE OF ty_r002,
-          lt_ship_costs TYPE TABLE OF ty_r002.
+    DATA: lt_r002                 TYPE TABLE OF ty_r002,
+          lt_ship_costs           TYPE TABLE OF ty_r002,
+          lv_clear_balance_amount TYPE ynft_e_wrbtr.
 
     DATA(lv_request_body) = request->get_text( ).
     DATA(lv_get_method) = request->get_method( ).
@@ -101,11 +102,14 @@
            r005~accountingdocument,
            r005~fiscalyear,
            r005~accountingdocumentitem,
+           r005~referenceitem,
            r005~deliverydocument,
            r005~deliverydocumentitem,
            r005~amount,
            r005~accountingdocument_inv,
-           r005~fiscalyear_inv
+           r005~fiscalyear_inv,
+           rbkp~reversedocument,
+           rbkp~reversedocumentfiscalyear
       FROM @lt_r002 AS r002
       INNER JOIN ynft_t_r005 AS r005 ON r002~companycode            = r005~companycode
                                     AND r002~accountingdocument     = r005~accountingdocument
@@ -113,20 +117,40 @@
                                     AND r002~accountingdocumentitem = r005~accountingdocumentitem
                                     AND r002~deliverydocument       = r005~deliverydocument
                                     AND r002~deliverydocumentitem   = r005~deliverydocumentitem
+      INNER JOIN i_supplierinvoiceapi01 AS rbkp ON rbkp~supplierinvoice = r005~accountingdocument_inv
+                                               AND rbkp~fiscalyear = r005~fiscalyear_inv
       ORDER BY r005~companycode, r005~accountingdocument, r005~fiscalyear, r005~accountingdocumentitem, r005~deliverydocument, r005~deliverydocumentitem
       INTO TABLE @DATA(lt_r005).
-
-
+    "dosya kapama standarttan ters kayıt alınırsa bizim tablolardan siliniyor.
+    LOOP AT lt_r005 INTO DATA(ls_r005) WHERE reversedocument IS NOT INITIAL.
+      DELETE FROM ynft_t_r005 WHERE companycode              = @ls_r005-companycode
+                                AND accountingdocument       = @ls_r005-accountingdocument
+                                AND fiscalyear               = @ls_r005-fiscalyear
+                                AND accountingdocumentitem   = @ls_r005-accountingdocumentitem
+                                AND referenceitem            = @ls_r005-referenceitem.
+    ENDLOOP.
+    DELETE lt_r005 WHERE reversedocument IS NOT INITIAL.
     "Dosya kapaması yapılmış masrafları sil
     LOOP AT lt_r002 ASSIGNING FIELD-SYMBOL(<ls_r002>).
-      READ TABLE lt_r005 INTO DATA(ls_r005) WITH KEY companycode            = <ls_r002>-companycode
-                                                     accountingdocument     = <ls_r002>-accountingdocument
-                                                     fiscalyear             = <ls_r002>-fiscalyear
-                                                     accountingdocumentitem = <ls_r002>-accountingdocumentitem
-                                                     deliverydocument       = <ls_r002>-deliverydocument
-                                                     deliverydocumentitem   = <ls_r002>-deliverydocumentitem BINARY SEARCH.
+      CLEAR lv_clear_balance_amount.
+      LOOP AT lt_r005 INTO ls_r005 WHERE companycode            = <ls_r002>-companycode
+                                     AND accountingdocument     = <ls_r002>-accountingdocument
+                                     AND fiscalyear             = <ls_r002>-fiscalyear
+                                     AND accountingdocumentitem = <ls_r002>-accountingdocumentitem
+                                     AND deliverydocument       = <ls_r002>-deliverydocument
+                                     AND deliverydocumentitem   = <ls_r002>-deliverydocumentitem.
+        lv_clear_balance_amount += ls_r005-amount.
+      ENDLOOP.
+
+*      READ TABLE lt_r005 INTO DATA(ls_r005) WITH KEY companycode            = <ls_r002>-companycode
+*                                                     accountingdocument     = <ls_r002>-accountingdocument
+*                                                     fiscalyear             = <ls_r002>-fiscalyear
+*                                                     accountingdocumentitem = <ls_r002>-accountingdocumentitem
+*                                                     deliverydocument       = <ls_r002>-deliverydocument
+*                                                     deliverydocumentitem   = <ls_r002>-deliverydocumentitem BINARY SEARCH.
       IF sy-subrc = 0.
-        IF ms_request-reversal IS INITIAL AND ls_r005-amount >= <ls_r002>-documentcurrenyamount.
+*        IF ms_request-reversal IS INITIAL AND ls_r005-amount >= <ls_r002>-documentcurrenyamount.
+        IF ms_request-reversal IS INITIAL AND lv_clear_balance_amount >= <ls_r002>-documentcurrenyamount.
           <ls_r002>-accountingdocument = 'XXDELETEXX'.
         ENDIF.
       ELSE.

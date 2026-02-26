@@ -16,10 +16,14 @@
                                                                   AND r005~accountingdocument = lt_output~accountingdocument
                                                                   AND r005~fiscalyear = lt_output~fiscalyear
                                                                   AND r005~accountingdocumentitem = lt_output~accountingdocumentitem
+      INNER JOIN i_supplierinvoiceapi01 AS rbkp ON rbkp~supplierinvoice = r005~accountingdocument_inv
+                                               AND rbkp~fiscalyear = r005~fiscalyear_inv
+       WHERE rbkp~reversedocument = ''
        ORDER BY r005~companycode,
            r005~accountingdocument,
            r005~fiscalyear,
            r005~accountingdocumentitem
+
        INTO TABLE @DATA(lt_r005).
 
     LOOP AT lt_output ASSIGNING FIELD-SYMBOL(<ls_output>).
