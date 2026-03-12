@@ -79,6 +79,9 @@
       WHERE deliverydocument IN @lt_deliverydocument
       INTO TABLE @DATA(lt_data).
       LOOP AT lt_data INTO DATA(ls_data).
+        ls_data-unitofmeasure = ycl_nft_imp_util_class=>cunit_output( iv_unitofmeasure = ls_data-unitofmeasure ).
+        ls_data-orderpriceunit = ycl_nft_imp_util_class=>cunit_output( iv_unitofmeasure = ls_data-orderpriceunit ).
+        ls_data-salesunit = ycl_nft_imp_util_class=>cunit_output( iv_unitofmeasure = ls_data-salesunit ).
         IF ls_data-orderpriceunit <> ls_data-unitofmeasure.
           TRY.
               ls_data-netpriceamount = ls_data-netpriceamount * ls_data-orderpriceunittoorderunitnmrtr  / ls_data-ordpriceunittoorderunitdnmntr.

@@ -112,6 +112,8 @@
 
       LOOP AT ms_request-item INTO ls_item.
         ADD 10 TO lv_deliverydocumentitem.
+*ölçü birimi dönüşümü
+        ls_item-purchaseorderquantityunit = ycl_nft_imp_util_class=>cunit_input( EXPORTING iv_unitofmeasure = ls_item-purchaseorderquantityunit ).
         ls_delivery_item_custom_fields                      = CORRESPONDING #( ls_item MAPPING quantityunit = purchaseorderquantityunit ).
         ls_delivery_item_custom_fields-deliverydocument     = lv_max_deliverydocument.
         ls_delivery_item_custom_fields-deliverydocumentitem = lv_deliverydocumentitem.

@@ -91,7 +91,8 @@
       LOOP AT lt_r002 INTO DATA(ls_r002).
         DATA(ls_cost_list) = VALUE #( lt_cost_list[ DeliveryDocument     = ls_r002-deliverydocument
                                                     DeliveryDocumentItem = ls_r002-deliverydocumentitem ] OPTIONAL ).
-
+        ls_cost_list-salesunit = ycl_nft_imp_util_class=>cunit_output( iv_unitofmeasure = ls_cost_list-salesunit ).
+        ls_cost_list-unitofmeasure = ycl_nft_imp_util_class=>cunit_output( iv_unitofmeasure = ls_cost_list-unitofmeasure ).
         APPEND VALUE #( deliverydocument     = ls_cost_list-deliverydocument
                         deliverydocumentitem = ls_cost_list-deliverydocumentitem
                         purchaseorder        = ls_cost_list-PurchaseOrder

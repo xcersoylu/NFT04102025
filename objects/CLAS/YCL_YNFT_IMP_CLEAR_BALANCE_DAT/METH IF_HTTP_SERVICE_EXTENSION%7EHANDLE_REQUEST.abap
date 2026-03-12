@@ -25,6 +25,19 @@
 
     /ui2/cl_json=>deserialize( EXPORTING json = lv_request_body CHANGING data = ms_request ).
 
+    SELECT * FROM ynft_t_dlvit_cus
+             WHERE quantityunit = 'ADT'
+             INTO TABLE @DATA(lt_dlvit_cus).
+    IF sy-subrc = 0.
+      LOOP AT lt_dlvit_cus INTO DATA(ls_dlvit_cus).
+        UPDATE ynft_t_dlvit_cus
+          SET quantityunit = 'ST'
+         WHERE companycode = @ls_dlvit_cus-companycode
+           AND deliverydocument = @ls_dlvit_cus-deliverydocument
+           AND deliverydocumentitem = @ls_dlvit_cus-deliverydocumentitem.
+      ENDLOOP.
+    ENDIF.
+
     "Önce tüm masraf belgelerini oku
     SELECT r002~companycode,
            r002~accountingdocument,

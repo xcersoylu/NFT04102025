@@ -7,9 +7,9 @@
     "DDLXNAME":"YMD_NFT_DDL_SHIP_EDIT_H",
     "VERSION":"A",
     "CHANGED_BY":"SAP_CUSTOMER",
-    "CHANGED_ON":"2024-05-30",
-    "CHANGED_AT":"09:10:21",
-    "UUID":"370E609375501EEF87CC8E1BEECA4079",
+    "CHANGED_ON":"2026-03-10",
+    "CHANGED_AT":"07:15:52",
+    "UUID":"FA163EBBCF7E1FE1878A1F1B1066483B",
     "ABAP_LANGUAGE_VERSION":"5"
    }
   ]
@@ -34,7 +34,7 @@
     "DDLXNAME":"YMD_NFT_DDL_SHIP_EDIT_H",
     "VERSION":"A",
     "UUID":"",
-    "SOURCE":"@Metadata.layer: #CORE\r\n@UI:{\r\nheaderInfo:{\r\n                typeNamePlural: 'Yükleme Güncelleme Ekranı',\r\n                typeName: 'Yükleme Güncelleme Ekranı',\r\n                title:{ type: #STANDARD, label: 'Yükleme Güncelleme Ekranı'  }\r\n           }\r\n}\r\nannotate entity YC_NFT_DDL_IMP_SHIP_EDIT_H\r\n    with \r\n{\r\n  @UI.facet: [  { id:              'Header',\r\n                  purpose:         #STANDARD,\r\n                  type:            #IDENTIFICATION_REFERENCE,\r\n                  label:           'Başlık',\r\n                  position:        10 } ,\r\n                 { id:              'Item',\r\n                  purpose:         #STANDARD,\r\n                  type:            #LINEITEM_REFERENCE,\r\n                  label:           'Kalem',\r\n                  position:        20,\r\n                  targetElement:   '_item' }\r\n                  ]\r\n  @UI.lineItem: [{ position: 10 }]\r\n  @UI.identification: [{ position : 10 }]\r\n  companycode;\r\n  @UI: { lineItem:       [ { position: 20, importance: #HIGH } ] ,\r\n         selectionField: [ { position: 20 } ],\r\n         identification: [{ position: 20 }] }\r\n         @Search.defaultSearchElement: true\r\n  deliverydocument;\r\n  @UI.identification: [{ position : 30 }]\r\n  deliverydate;\r\n  @UI.identification: [{ position : 40 }]\r\n  loadingdate;\r\n  @UI.identification: [{ position : 50 }]\r\n  billoflading;\r\n  @UI.identification: [{ position : 60 }]\r\n  customsgate;\r\n  @UI.identification: [{ position : 70 }]\r\n  customsreceivedate;\r\n  @UI.identification: [{ position : 80 }]\r\n  invoiceno;\r\n  @UI.identification: [{ position : 90 }]\r\n  invoicedate;\r\n  @UI.identification: [{ position : 100 }]\r\n  fictitiousdeclerationdate;\r\n  @UI.identification: [{ position : 110 }]\r\n  fictitiousdeclerationno;\r\n  @UI.identification: [{ position : 120 }]\r\n  customsdeclerationdate;\r\n  @UI.identification: [{ position : 130 }]\r\n  customsdeclerationno;\r\n  @UI.identification: [{ position : 140 }]\r\n  importdate;\r\n    \r\n}"
+    "SOURCE":"@Metadata.layer: #CORE\r\n@UI:{\r\nheaderInfo:{\r\n                typeNamePlural: 'Yükleme Güncelleme Ekranı',\r\n                typeName: 'Yükleme Güncelleme Ekranı',\r\n                title:{ type: #STANDARD, label: 'Yükleme Güncelleme Ekranı'  }\r\n           }\r\n}\r\nannotate entity YC_NFT_DDL_IMP_SHIP_EDIT_H with\r\n{\r\n  @UI.facet: [  { id:              'Header',\r\n                  purpose:         #STANDARD,\r\n                  type:            #IDENTIFICATION_REFERENCE,\r\n                  label:           'Başlık',\r\n                  position:        10 } ,\r\n                 { id:              'Item',\r\n                  purpose:         #STANDARD,\r\n                  type:            #LINEITEM_REFERENCE,\r\n                  label:           'Kalem',\r\n                  position:        20,\r\n                  targetElement:   '_item' }\r\n                  ]\r\n  @UI.lineItem: [{ position: 10 }]\r\n  @UI.identification: [{ position : 10 }]\r\n  companycode;\r\n  @UI: { lineItem:       [ { position: 20, importance: #HIGH } ] ,\r\n         selectionField: [ { position: 20 } ],\r\n         identification: [{ position: 20 }] }\r\n  @Search.defaultSearchElement: true\r\n  deliverydocument;\r\n  @UI.identification: [{ position : 30 }]\r\n  deliverydate;\r\n  @UI.identification: [{ position : 40 }]\r\n  loadingdate;\r\n  @UI.identification: [{ position : 50 }]\r\n  billoflading;\r\n  @UI.identification: [{ position : 60 }]\r\n  customsgate;\r\n  @UI.identification: [{ position : 70 }]\r\n  customsreceivedate;\r\n  @UI.identification: [{ position : 80 }]\r\n  invoiceno;\r\n  @UI.identification: [{ position : 90 }]\r\n  invoicedate;\r\n  @UI.identification: [{ position : 100 }]\r\n  fictitiousdeclerationdate;\r\n  @UI.identification: [{ position : 110 }]\r\n  fictitiousdeclerationno;\r\n  @UI.identification: [{ position : 120 }]\r\n  customsdeclerationdate;\r\n  @UI.identification: [{ position : 130 }]\r\n  customsdeclerationno;\r\n  @UI.identification: [{ position : 140 }]\r\n  importdate;\r\n  @UI.identification: [{ position : 150 }]\r\n  container_no;\r\n  @UI.identification: [{ position : 160 }]\r\n  vehicle_information;\r\n  @UI.identification: [{ position : 170 }] \r\n  @Consumption.valueHelpDefinition: [ { entity: { name: 'YVH_NFT_DEPARTURE_PORT', element: 'departure_port' } }]\r\n  departure_port;\r\n  @UI.identification: [{ position : 180 }]\r\n  @Consumption.valueHelpDefinition: [ { entity: { name: 'YVH_NFT_ARRIVAL_PORT', element: 'arrival_port' }}] \r\n  arrival_port;\r\n  @UI.identification: [{ position : 190 }]\r\n  eta;\r\n  @UI.identification: [{ position : 200 }]\r\n  ata;\r\n}"
    }
   ]
  },
@@ -69,6 +69,34 @@
     "NAME":"UI.HEADERINFO.TYPENAMEPLURAL",
     "ELEMENT_TYPE":"N",
     "VALUE":"'Yükleme Güncelleme Ekranı'"
+   },
+   {
+    "DDLXNAME":"YMD_NFT_DDL_SHIP_EDIT_H",
+    "ELEMENT":"ARRIVAL_PORT",
+    "NAME":"CONSUMPTION.VALUEHELPDEFINITION$1$.ENTITY.ELEMENT",
+    "ELEMENT_TYPE":"S",
+    "VALUE":"'arrival_port'"
+   },
+   {
+    "DDLXNAME":"YMD_NFT_DDL_SHIP_EDIT_H",
+    "ELEMENT":"ARRIVAL_PORT",
+    "NAME":"CONSUMPTION.VALUEHELPDEFINITION$1$.ENTITY.NAME",
+    "ELEMENT_TYPE":"S",
+    "VALUE":"'YVH_NFT_ARRIVAL_PORT'"
+   },
+   {
+    "DDLXNAME":"YMD_NFT_DDL_SHIP_EDIT_H",
+    "ELEMENT":"ARRIVAL_PORT",
+    "NAME":"UI.IDENTIFICATION$1$.POSITION",
+    "ELEMENT_TYPE":"S",
+    "VALUE":"180"
+   },
+   {
+    "DDLXNAME":"YMD_NFT_DDL_SHIP_EDIT_H",
+    "ELEMENT":"ATA",
+    "NAME":"UI.IDENTIFICATION$1$.POSITION",
+    "ELEMENT_TYPE":"S",
+    "VALUE":"200"
    },
    {
     "DDLXNAME":"YMD_NFT_DDL_SHIP_EDIT_H",
@@ -170,6 +198,13 @@
    },
    {
     "DDLXNAME":"YMD_NFT_DDL_SHIP_EDIT_H",
+    "ELEMENT":"CONTAINER_NO",
+    "NAME":"UI.IDENTIFICATION$1$.POSITION",
+    "ELEMENT_TYPE":"S",
+    "VALUE":"150"
+   },
+   {
+    "DDLXNAME":"YMD_NFT_DDL_SHIP_EDIT_H",
     "ELEMENT":"CUSTOMSDECLERATIONDATE",
     "NAME":"UI.IDENTIFICATION$1$.POSITION",
     "ELEMENT_TYPE":"S",
@@ -240,6 +275,34 @@
    },
    {
     "DDLXNAME":"YMD_NFT_DDL_SHIP_EDIT_H",
+    "ELEMENT":"DEPARTURE_PORT",
+    "NAME":"CONSUMPTION.VALUEHELPDEFINITION$1$.ENTITY.ELEMENT",
+    "ELEMENT_TYPE":"S",
+    "VALUE":"'departure_port'"
+   },
+   {
+    "DDLXNAME":"YMD_NFT_DDL_SHIP_EDIT_H",
+    "ELEMENT":"DEPARTURE_PORT",
+    "NAME":"CONSUMPTION.VALUEHELPDEFINITION$1$.ENTITY.NAME",
+    "ELEMENT_TYPE":"S",
+    "VALUE":"'YVH_NFT_DEPARTURE_PORT'"
+   },
+   {
+    "DDLXNAME":"YMD_NFT_DDL_SHIP_EDIT_H",
+    "ELEMENT":"DEPARTURE_PORT",
+    "NAME":"UI.IDENTIFICATION$1$.POSITION",
+    "ELEMENT_TYPE":"S",
+    "VALUE":"170"
+   },
+   {
+    "DDLXNAME":"YMD_NFT_DDL_SHIP_EDIT_H",
+    "ELEMENT":"ETA",
+    "NAME":"UI.IDENTIFICATION$1$.POSITION",
+    "ELEMENT_TYPE":"S",
+    "VALUE":"190"
+   },
+   {
+    "DDLXNAME":"YMD_NFT_DDL_SHIP_EDIT_H",
     "ELEMENT":"FICTITIOUSDECLERATIONDATE",
     "NAME":"UI.IDENTIFICATION$1$.POSITION",
     "ELEMENT_TYPE":"S",
@@ -279,6 +342,13 @@
     "NAME":"UI.IDENTIFICATION$1$.POSITION",
     "ELEMENT_TYPE":"S",
     "VALUE":"40"
+   },
+   {
+    "DDLXNAME":"YMD_NFT_DDL_SHIP_EDIT_H",
+    "ELEMENT":"VEHICLE_INFORMATION",
+    "NAME":"UI.IDENTIFICATION$1$.POSITION",
+    "ELEMENT_TYPE":"S",
+    "VALUE":"160"
    }
   ]
  },
@@ -367,8 +437,8 @@
     "EXTENDED_ARTIFACT":"YC_NFT_DDL_IMP_SHIP_EDIT_H",
     "VARIANT":"",
     "LAYER":1500,
-    "DT_UUID":"370E609375501EEF87CC8E1BEECA4079",
-    "RT_HASH":"CEF7369B83754FA3FA5971B74F9B3658A1ED41E5",
+    "DT_UUID":"FA163EBBCF7E1FE1878A1F1B1066483B",
+    "RT_HASH":"1B6F9DB0BC49D4CA0110E37E9F0735C00B5CA05E",
     "GEN_VERSION":"0",
     "TYPE":"0"
    }
@@ -378,6 +448,16 @@
   "table":"DDLX_RT_REFS",
   "data":
   [
+   {
+    "DDLXNAME":"YMD_NFT_DDL_SHIP_EDIT_H",
+    "ELEMENT":"ARRIVAL_PORT",
+    "NAME":"CONSUMPTION.VALUEHELPDEFINITION$1$.ENTITY.NAME",
+    "PATH":"YVH_NFT_ARRIVAL_PORT",
+    "REF_OBJECT_TYPE":"STOB",
+    "REF_OBJECT_SUBTYPE":"DO",
+    "REF_OBJECT_NAME":"YVH_NFT_ARRIVAL_PORT",
+    "REF_OBJECT_ELEMENT":""
+   },
    {
     "DDLXNAME":"YMD_NFT_DDL_SHIP_EDIT_H",
     "ELEMENT":"COMPANYCODE",
@@ -397,6 +477,16 @@
     "REF_OBJECT_SUBTYPE":"DOF",
     "REF_OBJECT_NAME":"YC_NFT_DDL_IMP_SHIP_EDIT_H",
     "REF_OBJECT_ELEMENT":"_ITEM"
+   },
+   {
+    "DDLXNAME":"YMD_NFT_DDL_SHIP_EDIT_H",
+    "ELEMENT":"DEPARTURE_PORT",
+    "NAME":"CONSUMPTION.VALUEHELPDEFINITION$1$.ENTITY.NAME",
+    "PATH":"YVH_NFT_DEPARTURE_PORT",
+    "REF_OBJECT_TYPE":"STOB",
+    "REF_OBJECT_SUBTYPE":"DO",
+    "REF_OBJECT_NAME":"YVH_NFT_DEPARTURE_PORT",
+    "REF_OBJECT_ELEMENT":""
    }
   ]
  },

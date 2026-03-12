@@ -27,6 +27,12 @@ authorization master ( instance )
       customsdeclerationdate    = customsdeclerationdate;
       customsdeclerationno      = customsdeclerationno;
       importdate                = importdate;
+      container_no              = container_no;
+      vehicle_information       = vehicle_information;
+      departure_port            = departure_port;
+      arrival_port              = arrival_port;
+      eta                       = eta;
+      ata                       = ata;
     }
 }
 

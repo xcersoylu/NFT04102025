@@ -7,9 +7,9 @@
     "SRVDNAME":"YSD_NFT_FIORI_VALUE_HELP",
     "VERSION":"A",
     "CHANGED_BY":"SAP_CUSTOMER",
-    "CHANGED_ON":"2025-10-03",
-    "CHANGED_AT":"07:39:10",
-    "DT_UUID":"FA163EBBCF7E1FE0A885818389CEA632",
+    "CHANGED_ON":"2026-03-05",
+    "CHANGED_AT":"08:05:36",
+    "DT_UUID":"FA163EBBCF7E1FE1868D42D857A06824",
     "SOURCE_ORIGIN":"0",
     "SRVD_SOURCE_TYPE":"S",
     "ABAP_LANGUAGE_VERSION":"5"
@@ -35,7 +35,7 @@
    {
     "SRVDNAME":"YSD_NFT_FIORI_VALUE_HELP",
     "VERSION":"A",
-    "SOURCE":"@EndUserText.label: 'Fiori Arama Yardımları Servis Tanımlama'\r\ndefine service YSD_NFT_FIORI_VALUE_HELP {\r\n  expose YVH_NFT_CSRCE               as CostSourceVH;\r\n  expose I_Supplier_VH               as SupplierVH;\r\n  expose YVH_NFT_DELIVERY            as DeliveryVH;\r\n  expose I_TaxCodeValueHelp          as TaxVH;\r\n  expose YVH_NFT_CTYPE               as CostTypeVH;\r\n  expose YVH_NFT_CALTY               as CalculationTypeVH;\r\n  expose YVH_NFT_CSRCE_CTYPE         as CostSourceCostTypeVH;\r\n  expose YVH_NFT_COMPANYCODE         as CompanyCodeVH;\r\n  expose I_CurrencyStdVH             as CurrencyVH;\r\n  expose YVH_NFT_COSTDOCUMENTTYPE    as CostDocumentTypeVH;\r\n  expose I_PaymentBlockingReason     as PaymentBlockingReasonVH;\r\n  expose YVH_NFT_VORGANG             as VorgangVH;\r\n  expose YVH_NFT_TAXCODE             as TaxCodeVH;\r\n  expose YVH_NFT_DDTYP               as DocumentTypeVH;\r\n  expose YVH_NFT_PAYMENT_METHOD      as PaymentMethodVH;\r\n  expose YVH_NFT_SPECIAL_GLCODE      as SpecialGlCodeVH;\r\n  expose YVH_NFT_withholdingtaxcode  as WithholdingTaxCodeVH;\r\n  expose YVH_NFT_WITHHOLDINGTAXCODE2 as WithholdingTaxCode2VH;\r\n  expose YVH_NFT_PaymentBlockReason  as PaymentBlockVH;\r\n  expose YVH_NFT_GlAccount           as GlAccountVH;\r\n  expose YVH_NFT_REVERSALREASON      as ReversalReasonVH;\r\n  expose YVH_NFT_PAYMENTTERMS        as PaymentTermsVH;\r\n}"
+    "SOURCE":"@EndUserText.label: 'Fiori Arama Yardımları Servis Tanımlama'\r\ndefine service YSD_NFT_FIORI_VALUE_HELP {\r\n  expose YVH_NFT_CSRCE               as CostSourceVH;\r\n  expose I_Supplier_VH               as SupplierVH;\r\n  expose YVH_NFT_DELIVERY            as DeliveryVH;\r\n  expose I_TaxCodeValueHelp          as TaxVH;\r\n  expose YVH_NFT_CTYPE               as CostTypeVH;\r\n  expose YVH_NFT_CALTY               as CalculationTypeVH;\r\n  expose YVH_NFT_CSRCE_CTYPE         as CostSourceCostTypeVH;\r\n  expose YVH_NFT_COMPANYCODE         as CompanyCodeVH;\r\n  expose I_CurrencyStdVH             as CurrencyVH;\r\n  expose YVH_NFT_COSTDOCUMENTTYPE    as CostDocumentTypeVH;\r\n  expose I_PaymentBlockingReason     as PaymentBlockingReasonVH;\r\n  expose YVH_NFT_VORGANG             as VorgangVH;\r\n  expose YVH_NFT_TAXCODE             as TaxCodeVH;\r\n  expose YVH_NFT_DDTYP               as DocumentTypeVH;\r\n  expose YVH_NFT_PAYMENT_METHOD      as PaymentMethodVH;\r\n  expose YVH_NFT_SPECIAL_GLCODE      as SpecialGlCodeVH;\r\n  expose YVH_NFT_withholdingtaxcode  as WithholdingTaxCodeVH;\r\n  expose YVH_NFT_WITHHOLDINGTAXCODE2 as WithholdingTaxCode2VH;\r\n  expose YVH_NFT_PaymentBlockReason  as PaymentBlockVH;\r\n  expose YVH_NFT_GlAccount           as GlAccountVH;\r\n  expose YVH_NFT_REVERSALREASON      as ReversalReasonVH;\r\n  expose YVH_NFT_PAYMENTTERMS        as PaymentTermsVH;\r\n  expose YVH_NFT_DEPARTURE_PORT      as DeparturePortVH;\r\n  expose YVH_NFT_ARRIVAL_PORT        as ArrivalPortVH;\r\n}"
    }
   ]
  },
@@ -100,6 +100,15 @@
     "EXPOSED_ARTIFACT_TYPE":"E",
     "EXPOSED_ALIAS":"TAXVH",
     "EXPOSED_ALIAS_RAW":"TaxVH",
+    "INCL_SERVICE":""
+   },
+   {
+    "SRVDNAME":"YSD_NFT_FIORI_VALUE_HELP",
+    "SERVICE":"YSD_NFT_FIORI_VALUE_HELP",
+    "EXPOSED_ARTIFACT":"YVH_NFT_ARRIVAL_PORT",
+    "EXPOSED_ARTIFACT_TYPE":"E",
+    "EXPOSED_ALIAS":"ARRIVALPORTVH",
+    "EXPOSED_ALIAS_RAW":"ArrivalPortVH",
     "INCL_SERVICE":""
    },
    {
@@ -172,6 +181,15 @@
     "EXPOSED_ARTIFACT_TYPE":"E",
     "EXPOSED_ALIAS":"DELIVERYVH",
     "EXPOSED_ALIAS_RAW":"DeliveryVH",
+    "INCL_SERVICE":""
+   },
+   {
+    "SRVDNAME":"YSD_NFT_FIORI_VALUE_HELP",
+    "SERVICE":"YSD_NFT_FIORI_VALUE_HELP",
+    "EXPOSED_ARTIFACT":"YVH_NFT_DEPARTURE_PORT",
+    "EXPOSED_ARTIFACT_TYPE":"E",
+    "EXPOSED_ALIAS":"DEPARTUREPORTVH",
+    "EXPOSED_ALIAS_RAW":"DeparturePortVH",
     "INCL_SERVICE":""
    },
    {
@@ -275,8 +293,8 @@
     "SERVICE":"YSD_NFT_FIORI_VALUE_HELP",
     "SERVICE_RAW":"YSD_NFT_FIORI_VALUE_HELP",
     "SOURCE_TYPE":"S",
-    "DT_UUID":"FA163EBBCF7E1FE0A885818389CEA632",
-    "RT_HASH":"B76D312DBC4A928520197096A642BF98FAA12ABA",
+    "DT_UUID":"FA163EBBCF7E1FE1868D42D857A06824",
+    "RT_HASH":"80988A9020153A7C33C0E946A0FD2C8DA93DC30E",
     "GEN_VERSION":"0"
    }
   ]
