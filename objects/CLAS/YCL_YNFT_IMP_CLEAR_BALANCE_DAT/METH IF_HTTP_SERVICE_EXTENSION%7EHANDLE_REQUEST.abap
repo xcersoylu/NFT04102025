@@ -67,6 +67,7 @@
       DATA(lt_shipment)  = lt_r002.
       DELETE lt_shipment WHERE documenttype <> '1'.
 
+      "Yükleme => Çekme
       SELECT cus_clea~deliverydocument,
              cus_clea~deliverydocumentitem,
              lips~actualdeliveryquantity    AS clearencequantity,
@@ -81,6 +82,24 @@
         INNER JOIN i_deliverydocumentitem AS lips ON lips~deliverydocument     = cus_clea~deliverydocument
                                                  AND lips~deliverydocumentitem = cus_clea~deliverydocumentitem
         INTO TABLE @DATA(lt_shipment_clearence).
+
+      "Yükleme => Anterpo Giriş => Çekme
+      SELECT cus_clea~deliverydocument,
+             cus_clea~deliverydocumentitem,
+             lips~actualdeliveryquantity   AS clearencequantity,
+             cus_ship~deliverydocument     AS shipmentdocument,
+             cus_ship~deliverydocumentitem AS shipmentdocumentitem,
+             cus_ship~shipquantity
+        FROM @lt_shipment AS shipment
+        INNER JOIN ynft_t_dlvit_cus AS cus_ant_in ON cus_ant_in~referencedocument     = shipment~deliverydocument
+                                                 AND cus_ant_in~referencedocumentitem = shipment~deliverydocumentitem
+        INNER JOIN ynft_t_dlvit_cus AS cus_clea ON cus_clea~referencedocument     = cus_ant_in~deliverydocument
+                                               AND cus_clea~referencedocumentitem = cus_ant_in~deliverydocumentitem
+        INNER JOIN ynft_t_dlvit_cus AS cus_ship ON cus_ship~deliverydocument      = shipment~deliverydocument
+                                               AND cus_ship~deliverydocumentitem  = shipment~deliverydocumentitem
+        INNER JOIN i_deliverydocumentitem AS lips ON lips~deliverydocument     = cus_clea~deliverydocument
+                                                 AND lips~deliverydocumentitem = cus_clea~deliverydocumentitem
+        APPENDING TABLE @lt_shipment_clearence.
 
       LOOP AT lt_r002 INTO DATA(ls_r002) WHERE documenttype = '1'.
         "Yükleme ile girilen masrafları çekme belgeleri üzerine dağıt
