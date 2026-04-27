@@ -73,6 +73,24 @@
         ENDIF.
       ENDLOOP.
     ENDIF.
+*alacak dekontu ve sonradan alacaklandırmada tutarlar -1 ile çarpılıyor.
+    IF ms_request-header-vorgang = '2' OR ms_request-header-vorgang = '4'.
+      LOOP AT lt_glitem ASSIGNING FIELD-SYMBOL(<ls_glitem_temp>).
+        LOOP AT <ls_glitem_temp>-currencyamount ASSIGNING FIELD-SYMBOL(<ls_currencyamount>).
+            <ls_currencyamount>-journalentryitemamount *= -1.
+        ENDLOOP.
+      ENDLOOP.
+      LOOP AT ms_request-apitem ASSIGNING FIELD-SYMBOL(<ls_apitem_temp>).
+        LOOP AT <ls_apitem_temp>-currencyamount ASSIGNING FIELD-SYMBOL(<ls_currencyamount2>).
+            <ls_currencyamount2>-journalentryitemamount *= -1.
+        ENDLOOP.
+      ENDLOOP.
+      LOOP AT ms_request-taxitem ASSIGNING FIELD-SYMBOL(<ls_taxitem_temp>).
+        LOOP AT <ls_taxitem_temp>-currencyamount ASSIGNING FIELD-SYMBOL(<ls_currencyamount3>).
+            <ls_currencyamount3>-journalentryitemamount *= -1.
+        ENDLOOP.
+      ENDLOOP.
+    ENDIF.
     IF ms_response-error_messages IS INITIAL.
       DELETE ms_request-withholdingtaxitems WHERE withholdingtaxtype IS INITIAL AND
                                                   withholdingtaxcode IS INITIAL.
